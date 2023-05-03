@@ -18,7 +18,13 @@ const getKnownFilings = () => readFile('filings.json').then(JSON.parse);
 Promise.all([getAllFilings(), getKnownFilings()])
   .then(([filings, knownFilings]) => {
     const newFilings = filings.filter((filing) => !knownFilings.includes(filing));
-    newFilings.forEach(console.log);
+    newFilings.forEach((f) => console.log(f));
 
-    return writeFile('filings.json', JSON.stringify(filings.concat(newFilings)));
+    return writeFile(
+      'filings.json',
+      JSON.stringify(filings.concat(newFilings))
+    )
+      .then(() => {
+        console.log('done')
+      });
   });
